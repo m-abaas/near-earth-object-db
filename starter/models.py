@@ -12,9 +12,9 @@ class NearEarthObject(object):
         # TODO: What instance variables will be useful for storing on the Near Earth Object?
 
         self.orbits_list = []
-        self.date = kwargs['date']
-        self.hazard = kwargs['hazard']
-        self.size = kwargs['size']
+        self.name = kwargs['name']
+        self.hazard = bool(kwargs['is_potentially_hazardous_asteroid'])
+        self.diameter = kwargs['estimated_diameter_min_kilometers']
 
 
     def update_orbits(self, orbit):
@@ -41,3 +41,5 @@ class OrbitPath(object):
         :param kwargs:    dict of attributes about a given orbit, only a subset of attributes used
         """
         # TODO: What instance variables will be useful for storing on the Near Earth Object?
+        self.date = kwargs['close_approach_date']
+        self.distance = kwargs['miss_distance_kilometers']
