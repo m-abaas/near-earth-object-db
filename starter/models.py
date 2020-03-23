@@ -11,6 +11,12 @@ class NearEarthObject(object):
         """
         # TODO: What instance variables will be useful for storing on the Near Earth Object?
 
+        self.orbits_list = []
+        self.date = kwargs['date']
+        self.hazard = kwargs['hazard']
+        self.size = kwargs['size']
+
+
     def update_orbits(self, orbit):
         """
         Adds an orbit path information to a Near Earth Object list of orbits
@@ -20,6 +26,7 @@ class NearEarthObject(object):
         """
 
         # TODO: How do we connect orbits back to the Near Earth Object?
+        self.orbits_list.append(orbit)
 
 
 class OrbitPath(object):
