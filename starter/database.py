@@ -42,10 +42,8 @@ class NEODatabase(object):
             for row in reader:
                 # List version of the row
                 attributes_list = list(row.items())
-                # Dict version of the row
-                attributes_dict = dict(attributes_list)
-                NEO = NearEarthObject(**attributes_dict)
-                orbit = OrbitPath(**attributes_dict)
+                NEO = NearEarthObject(**attributes_list)
+                orbit = OrbitPath(**attributes_list)
                 NEO.update_orbits(orbit)
                 # Getting the close approach date of this orbit
                 orbit_date = orbit.date
