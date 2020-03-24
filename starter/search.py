@@ -1,3 +1,4 @@
+import datetime
 from collections import namedtuple
 from enum import Enum
 
@@ -35,6 +36,13 @@ class Query(object):
         :param kwargs: dict of search query parameters to determine which SearchOperation query to use
         """
         # TODO: What instance variables will be useful for storing on the Query object?
+        self.output_format = kwargs.get('output')
+        self.return_object = kwargs.get('return_object')
+        self.date = kwargs.get('date')
+        self.start_date = kwargs.get('start_date')
+        self.end_date = kwargs.get('end_date')
+        self.number = kwargs.get('number')
+        self.filter = kwargs.get('filter')
 
     def build_query(self):
         """
@@ -45,6 +53,13 @@ class Query(object):
         """
 
         # TODO: Translate the query parameters into a QueryBuild.Selectors object
+        if(self.date is not None):
+            date_search = Query.DateSearch(type = 'single_date', values = self.date)
+        else:
+            date_search = Query.DateSearch(type = 'interval', values = [self.start_date, self.end_date])
+
+        Selector = Query.Selectors(date_search = date_search, number = self.number, filters = self.filter, return_object = None)
+        return Selector
 
 
 class Filter(object):
@@ -54,6 +69,9 @@ class Filter(object):
     """
     Options = {
         # TODO: Create a dict of filter name to the NearEarthObject or OrbitalPath property
+        'diameter': 'diameter_min_km',
+        'distance': 'miss_dostance_kilometers',
+        'is_hazardous': 'is_potentially_hazardous_asteroid'
     }
 
     Operators = {
@@ -106,6 +124,8 @@ class NEOSearcher(object):
         """
         self.db = db
         # TODO: What kind of an instance variable can we use to connect DateSearch to how we do search?
+        self.NEOs = db.NEOs
+        self.date_to_NEOs = db.date_to_NEOs
 
     def get_objects(self, query):
         """
@@ -122,3 +142,48 @@ class NEOSearcher(object):
         # TODO: Write instance methods that get_objects can use to implement the two types of DateSearch your project
         # TODO: needs to support that then your filters can be applied to. Remember to return the number specified in
         # TODO: the Query.Selectors as well as in the return_type from Query.Selectors
+        date_search = query.date_search
+        number = query.number
+        filters = query.filters
+        return_object = query.return_object
+        print(date_search, number, filters, return_object)
+        self.simple_search(date_search, number)
+
+        
+    def simple_search(self, date_search, number):
+        # If only a sinlge date search is required
+        if(date_search.type == 'single_date'):
+            for i in range(number):
+                try:
+                    NEO_name = self.date_to_NEOs[date_search.values][i].name
+                except Exception:
+                    # No more NEOs for that date
+                    break
+                if(NEO_name in self.NEOs.keys()):
+                    # To make sure only unique NEOs are printed
+                    self.NEOs.pop('NEO_name', None)
+                    print(NEO_name)
+
+        else:
+            start_date = datetime.datetime.strptime(date_search.values[0], '%Y-%m-%d')  
+            end_date = datetime.datetime.strptime(date_search.values[1], '%Y-%m-%d')  
+            step = datetime.timedelta(days=1)
+
+            while(start_date <= end_date):
+                temp_date = start_date.date()
+                start_date += step 
+                for i in range(number):
+                    try:
+                        tmp_date_str = temp_date.strftime('%Y-%m-%d')
+                        NEO_name = self.date_to_NEOs[tmp_date_str][i].name
+                        print(NEO_name)
+                    except Exception:
+                        # No more NEOs for that day
+                        break
+                    if(NEO_name in self.NEOs.keys()):
+                        # To make sure only unique NEOs are printed
+                        self.NEOs.pop('NEO_name', None)
+                        print(NEO_name)
+
+                      
+

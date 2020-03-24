@@ -1,5 +1,8 @@
 from database import NEODatabase
+from search import DateSearch
 
 x = NEODatabase('./data/neo_data.csv')
 x.load_data()
-print(x.date_to_NEOs)
+print(x.NEOs)
+options = DateSearch.list()
+print(options)
