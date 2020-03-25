@@ -14,7 +14,7 @@ class NearEarthObject(object):
         self.orbits_list = []
         self.name = kwargs.get('name')
         self.hazard = bool(kwargs.get('is_potentially_hazardous_asteroid'))
-        self.diameter = kwargs.get('estimated_diameter_min_kilometers')
+        self.diameter_min_km = kwargs.get('estimated_diameter_min_kilometers')
 
 
     def update_orbits(self, orbit):

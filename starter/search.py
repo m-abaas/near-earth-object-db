@@ -146,44 +146,52 @@ class NEOSearcher(object):
         number = query.number
         filters = query.filters
         return_object = query.return_object
-        print(date_search, number, filters, return_object)
-        self.simple_search(date_search, number)
+        #print(date_search, number, filters, return_object)
+        results = self.simple_search(date_search, number)
+
+        return results
 
         
     def simple_search(self, date_search, number):
         # If only a sinlge date search is required
+        results = []
+       # print(number)
         if(date_search.type == 'single_date'):
-            for i in range(number):
-                try:
-                    NEO_name = self.date_to_NEOs[date_search.values][i].name
-                except Exception:
-                    # No more NEOs for that date
-                    break
+            for i in range(len(self.date_to_NEOs[date_search.values])):
+            
+                NEO_name = self.date_to_NEOs[date_search.values][i].name
                 if(NEO_name in self.NEOs.keys()):
                     # To make sure only unique NEOs are printed
-                    self.NEOs.pop('NEO_name', None)
-                    print(NEO_name)
+                    results.append(self.NEOs[NEO_name])
+                    self.NEOs.pop(NEO_name, None)
+                    
 
         else:
             start_date = datetime.datetime.strptime(date_search.values[0], '%Y-%m-%d')  
             end_date = datetime.datetime.strptime(date_search.values[1], '%Y-%m-%d')  
             step = datetime.timedelta(days=1)
 
+            #for i in range(number):
             while(start_date <= end_date):
                 temp_date = start_date.date()
+                tmp_date_str = temp_date.strftime('%Y-%m-%d')
                 start_date += step 
-                for i in range(number):
-                    try:
-                        tmp_date_str = temp_date.strftime('%Y-%m-%d')
-                        NEO_name = self.date_to_NEOs[tmp_date_str][i].name
-                        print(NEO_name)
-                    except Exception:
-                        # No more NEOs for that day
-                        break
+                for i in range(len(self.date_to_NEOs[tmp_date_str])):
+                    NEO_name = self.date_to_NEOs[tmp_date_str][i].name
+
                     if(NEO_name in self.NEOs.keys()):
                         # To make sure only unique NEOs are printed
-                        self.NEOs.pop('NEO_name', None)
-                        print(NEO_name)
+                        results.append(self.NEOs[NEO_name])
+                        self.NEOs.pop(NEO_name, None)
+                        
 
-                      
+        if(len(results) > number):
+            # To make sure that the results won't be larger than the required number
+            results =  results[:number]
+        else:
+            pass
+        return results
 
+
+    def filter_results(self):
+        pass
