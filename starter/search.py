@@ -111,23 +111,17 @@ class Filter(object):
         """
         # TODO: return a defaultdict of filters with key of NearEarthObject or OrbitPath and value of empty list or list of Filters
         defaultdict = {'NEO': [], 'Path': []}
-        #print(ReturnObjects)
         for filter_option in filter_options:
-            #print("Here")
             elements = filter_option.split(':')
-           # print(elements)
             field = elements[0]
             operation = elements[1]
             value = elements[2]
 
             if(field == 'distance'):
-               # print("Appending")
                 defaultdict['Path'].append(Filter(field, 'Orbit', operation, value))
             else:
-                #print("Appending here")
                 defaultdict['NEO'].append(Filter(field, 'NEO', operation, value))
 
-      #  print(defaultdict)
         return defaultdict
 
 
@@ -139,9 +133,7 @@ class Filter(object):
         :return: filtered list of Near Earth Object results
         """
         # TODO: Takes a list of NearEarthObjects and applies the value of its filter operation to the results
-        #print(self.field)
         filtered_results = []
-     #   print(self)
         if(self.field == 'is_hazardous'):
             # Casting for the value in the filter
             if(self.value == 'True'):
@@ -152,15 +144,7 @@ class Filter(object):
             casted_value = float(self.value)
 
         neo_property = Filter.Options[self.field]
-       # print(neo_property)
         for result in results:
-            """
-            print('#################################################')
-            print(casted_value)
-            print(getattr(result, neo_property))
-            print(Filter.Operators[self.operation](getattr(result, neo_property), casted_value))
-            print('#################################################')
-            """
             if(Filter.Operators[self.operation](getattr(result, neo_property), casted_value)): 
                 filtered_results.append(result)
             
@@ -203,25 +187,15 @@ class NEOSearcher(object):
         number = query.number
         filters = query.filters
         return_object = query.return_object
-        #print(date_search, number, filters, return_object)
         results = self.simple_search(date_search)
-       # print(results[1])
-
 
 
         if filters != None:
-           # print(filters)
             filters_dict = Filter.create_filter_options(filters)
-            #print(len(filters_dict['NEO']), '\n')
-           # print(filters_dict)
             for i in range(len(filters_dict['NEO'])):
-                #print('Calling .. \n')
-               # print(i)
                 results = filters_dict['NEO'][i].apply(results)
 
-
             for j in range(len(filters_dict['Path'])):
-               # print('Calling .. \n')
                 results = filters_dict['Path'][j].apply(results)
 
 
@@ -234,7 +208,6 @@ class NEOSearcher(object):
     def simple_search(self, date_search):
         # If only a sinlge date search is required
         results = []
-       # print(number)
         if(date_search.type == 'single_date'):
             for i in range(len(self.date_to_NEOs[date_search.values])):
             
@@ -250,7 +223,6 @@ class NEOSearcher(object):
             end_date = datetime.datetime.strptime(date_search.values[1], '%Y-%m-%d')  
             step = datetime.timedelta(days=1)
 
-            #for i in range(number):
             while(start_date <= end_date):
                 temp_date = start_date.date()
                 tmp_date_str = temp_date.strftime('%Y-%m-%d')

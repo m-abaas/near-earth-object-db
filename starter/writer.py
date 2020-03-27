@@ -19,7 +19,8 @@ class OutputFormat(Enum):
 
 class NEOWriter(object):
     """
-    Python object use to write the results from supported output formatting options.
+    Python object use to write the results from
+    supported output formatting options.
     """
 
     def __init__(self):
@@ -28,16 +29,20 @@ class NEOWriter(object):
 
     def write(self, format, data, **kwargs):
         """
-        Generic write interface that, depending on the OutputFormat selected calls the
+        Generic write interface that, depending
+        on the OutputFormat selected calls the
         appropriate instance write function
 
         :param format: str representing the OutputFormat
         :param data: collection of NearEarthObject or OrbitPath results
-        :param kwargs: Additional attributes used for formatting output e.g. filename
+        :param kwargs: Additional attributes used for formatting
+        output e.g. filename
         :return: bool representing if write successful or not
         """
-        # TODO: Using the OutputFormat, how can we organize our 'write' logic for output to stdout vs to csvfile
-        # TODO: into instance methods for NEOWriter? Write instance methods that write() can call to do the necessary
+        # TODO: Using the OutputFormat, how can we organize
+        # our 'write' logic for output to stdout vs to csvfile
+        # TODO: into instance methods for NEOWriter? Write instance
+        # methods that write() can call to do the necessary
         # TODO: output format.
         if format == OutputFormat.display.value:
             self.display(data)
@@ -45,7 +50,6 @@ class NEOWriter(object):
             self.write_to_csv(data)
 
         return True
-
 
     @classmethod
     def display(self, data):
@@ -75,11 +79,12 @@ class NEOWriter(object):
             self.nice_print()
             with open('./results.csv', 'w', newline='') as file:
                 writer = csv.writer(file)
-                writer.writerow(["NEO_id", "NEO_name", "miss_distance", "orbit_date"])
+                writer.writerow(["NEO_id", "NEO_name",
+                                 "miss_distance", "orbit_date"])
                 for i in range(len(data)):
                     for j in range(len(data[i].orbits)):
-                        writer.writerow([data[i].id, data[i].name, data[i].orbits[j].miss_distance_kilometers, data[i].orbits[j].close_approach_date])
-                    
-                   # writer.writerow([1, "Linus Torvalds", "Linux Kernel"])
+                        writer.writerow([data[i].id, data[i].name,
+                                         data[i].orbits[j].miss_distance_kilometers,
+                                         data[i].orbits[j].close_approach_date])
 
             file.close()
