@@ -32,10 +32,10 @@ class NearEarthObject(object):
 
         # TODO: How do we connect orbits back to the Near Earth Object?
         self.orbits.append(orbit)
-
+"""
     def __repr__(self):
         return(f'id: {self.id} \nname: {self.name} \norbits: {self.orbits}')
-
+"""
 
 class OrbitPath(object):
     """
@@ -52,8 +52,9 @@ class OrbitPath(object):
         self.neo_name = kwargs.get('name')
         self.close_approach_date = kwargs.get('close_approach_date')
         self.miss_distance_kilometers = float(kwargs.get('miss_distance_kilometers'))
-
+"""
     def __repr__(self):
         return(f'neo_name: {self.neo_name} \n'\
         f'close_approach_date: {self.close_approach_date} \n'\
         f'miss_distance_kilometers: {self.miss_distance_kilometers}')
+"""

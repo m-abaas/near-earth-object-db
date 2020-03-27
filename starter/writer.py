@@ -1,4 +1,5 @@
 from enum import Enum
+import csv
 
 
 class OutputFormat(Enum):
@@ -40,11 +41,11 @@ class NEOWriter(object):
         # TODO: output format.
         if format == OutputFormat.display.value:
             self.display(data)
-            pass
         else:
-            self.display(data)
-            pass
-            #self.write_to_csv(data)
+            self.write_to_csv(data)
+
+        return True
+
 
     @classmethod
     def display(self, data):
@@ -66,5 +67,19 @@ class NEOWriter(object):
 
     @classmethod
     def write_to_csv(self, data):
-        pass
+        if(len(data) == 0):
+            print("No results found, try different search.")
+        else:
+            self.nice_print()
+            print("Results can be found at results.csv file.")
+            self.nice_print()
+            with open('./results.csv', 'w', newline='') as file:
+                writer = csv.writer(file)
+                writer.writerow(["NEO_id", "NEO_name", "miss_distance", "orbit_date"])
+                for i in range(len(data)):
+                    for j in range(len(data[i].orbits)):
+                        writer.writerow([data[i].id, data[i].name, data[i].orbits[j].miss_distance_kilometers, data[i].orbits[j].close_approach_date])
+                    
+                   # writer.writerow([1, "Linus Torvalds", "Linux Kernel"])
 
+            file.close()
