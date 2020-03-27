@@ -48,7 +48,7 @@ class NEODatabase(object):
                 orbit = OrbitPath(**attributes_dict)
                 NEO.update_orbits(orbit)
                 # Getting the close approach date of this orbit
-                orbit_date = orbit.date
+                orbit_date = orbit.close_approach_date
                 if self.date_to_NEOs.get(orbit_date) is None:
                     self.date_to_NEOs[f'{orbit_date}'] = [NEO]
                 else:
