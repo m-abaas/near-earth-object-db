@@ -38,19 +38,31 @@ class NEOWriter(object):
         # TODO: Using the OutputFormat, how can we organize our 'write' logic for output to stdout vs to csvfile
         # TODO: into instance methods for NEOWriter? Write instance methods that write() can call to do the necessary
         # TODO: output format.
-    if format == OutputFormat.display.value:
-        self.display(data)
-    else:
-        pass
-        #self.write_to_csv(data)
+        if format == OutputFormat.display.value:
+            self.display(data)
+            pass
+        else:
+            self.display(data)
+            pass
+            #self.write_to_csv(data)
 
     @classmethod
     def display(self, data):
         if(len(data) == 0):
             print("No results found, try different search.")
         else:
-            for _ in data:
-                print(_)
+            self.nice_print()
+            print(f'Found {len(data)} results for the given search criteria')
+            self.nice_print()
+            for i in range(len(data)):
+                print(f'The NEO number #{i}')
+                self.nice_print()
+                print(data[i])
+                self.nice_print()
+
+    @classmethod
+    def nice_print(self):
+        print('='*50)
 
     @classmethod
     def write_to_csv(self, data):

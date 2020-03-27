@@ -12,6 +12,7 @@ class NearEarthObject(object):
         # TODO: What instance variables will be useful for storing on the Near Earth Object?
 
         self.orbits = []
+        self.id = kwargs.get('id')
         self.name = kwargs.get('name')
         self.string_hazard = kwargs.get('is_potentially_hazardous_asteroid')
         if(self.string_hazard == 'True'):
@@ -33,9 +34,7 @@ class NearEarthObject(object):
         self.orbits.append(orbit)
 
     def __repr__(self):
-        return(f'orbits: {self.orbits} \nname: {self.name} \nis_potentially_hazardous_asteroid: {self.is_potentially_hazardous_asteroid} \n'\
-        f'diameter_min_km: {self.diameter_min_km} \n'\
-        f'miss_distance_kilometers: {self.miss_distance_kilometers}')
+        return(f'id: {self.id} \nname: {self.name} \norbits: {self.orbits}')
 
 
 class OrbitPath(object):
@@ -54,7 +53,7 @@ class OrbitPath(object):
         self.close_approach_date = kwargs.get('close_approach_date')
         self.miss_distance_kilometers = float(kwargs.get('miss_distance_kilometers'))
 
-#    def __repr__(self):
-#        return(f'neo_name: {self.neo_name} \nclose_approach_date: {self.close_approach_date} \n'\
-#        f'close_approach_date: {self.close_approach_date} \n'\
-#        f'miss_distance_kilometers: {self.miss_distance_kilometers}')
+    def __repr__(self):
+        return(f'neo_name: {self.neo_name} \n'\
+        f'close_approach_date: {self.close_approach_date} \n'\
+        f'miss_distance_kilometers: {self.miss_distance_kilometers}')

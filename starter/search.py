@@ -228,7 +228,7 @@ class NEOSearcher(object):
         # Last step is to cut by number
         results = self.cut_by_number(results, number)
     
-       # print(len(results))
+        print(results[0])
         return results
 
         
